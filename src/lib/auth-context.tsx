@@ -52,22 +52,16 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 const STORAGE_KEY = "edu_auth_user";
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+// Default user (auth disabled)
+const { password: _defaultPw, ...DEFAULT_USER } = MOCK_USERS["parent@school.edu"];
 
-  // Restore session on mount
-  useEffect(() => {
-    try {
-      const stored = sessionStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        setUser(JSON.parse(stored));
-      }
-    } catch {
-      // ignore
-    }
-    setIsLoading(false);
-  }, []);
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<AuthUser | null>(DEFAULT_USER);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Auth disabled: using default mock user
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  useEffect(() => {}, []);
 
   const login = async (email: string, password: string) => {
     // Simulate network delay

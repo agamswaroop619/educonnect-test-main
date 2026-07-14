@@ -6,8 +6,6 @@ import {
   useRouter,
   HeadContent,
   Scripts,
-  useNavigate,
-  useRouterState,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { AuthProvider, useAuth } from "@/lib/auth-context";
@@ -120,28 +118,6 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function AuthGuard() {
-  const { user, isLoading } = useAuth();
-  const navigate = useNavigate();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-
-  useEffect(() => {
-    if (isLoading) return;
-    if (!user && pathname !== "/login") {
-      navigate({ to: "/login" });
-    }
-    if (user && pathname === "/login") {
-      navigate({ to: "/" });
-    }
-  }, [user, isLoading, pathname, navigate]);
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <span className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-      </div>
-    );
-  }
-
   return <Outlet />;
 }
 
