@@ -7,7 +7,7 @@ import { BadgeCheck, Mail, Phone, MapPin, Calendar, Droplet, Home } from "lucide
 import { Pill } from "@/components/common/Pill";
 
 export const Route = createFileRoute("/profile")({
-  head: () => ({ meta: [{ title: "Profile — Scholarly" }, { name: "description", content: "Student and parent profile." }] }),
+  head: () => ({ meta: [{ title: "Profile — EduConnect" }, { name: "description", content: "Student and parent profile." }] }),
   component: ProfilePage,
 });
 

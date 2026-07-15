@@ -8,7 +8,7 @@ import { CheckCircle2, XCircle, CalendarOff, Flame } from "lucide-react";
 import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
 export const Route = createFileRoute("/attendance")({
-  head: () => ({ meta: [{ title: "Attendance — Scholarly" }, { name: "description", content: "Real-time attendance tracking with pattern analysis." }] }),
+  head: () => ({ meta: [{ title: "Attendance — EduConnect" }, { name: "description", content: "Real-time attendance tracking with pattern analysis." }] }),
   component: AttendancePage,
 });
 

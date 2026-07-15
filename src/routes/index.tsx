@@ -12,7 +12,7 @@ import { useInView } from "@/hooks/use-animate";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: `Home — ${student.name} | Scholarly` },
+      { title: `Home — ${student.name} | EduConnect` },
       { name: "description", content: "Dashboard overview: attendance, today's tasks, subjects and school updates." },
     ],
   }),

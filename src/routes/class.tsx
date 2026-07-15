@@ -168,7 +168,7 @@ function ClassPage() {
         <SectionCard
           title={`Students (${filtered.length})`}
           action={
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {/* Status filter */}
               <div className="relative">
                 <Filter className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
@@ -191,7 +191,7 @@ function ClassPage() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search…"
-                  className="h-8 rounded-lg border border-input bg-background pl-7 pr-3 text-xs outline-none w-32"
+                  className="h-8 w-28 rounded-lg border border-input bg-background pl-7 pr-3 text-xs outline-none sm:w-32"
                 />
               </div>
             </div>

@@ -8,7 +8,7 @@ import { Award, TrendingUp, Users, Star, ThumbsUp, MessageCircle } from "lucide-
 import { useInView } from "@/hooks/use-animate";
 
 export const Route = createFileRoute("/reports")({
-  head: () => ({ meta: [{ title: "Report Card — Scholarly" }, { name: "description", content: "Academic performance, grades and teacher remarks." }] }),
+  head: () => ({ meta: [{ title: "Report Card — EduConnect" }, { name: "description", content: "Academic performance, grades and teacher remarks." }] }),
   component: ReportsPage,
 });
 

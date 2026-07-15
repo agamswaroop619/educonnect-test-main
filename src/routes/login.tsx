@@ -96,7 +96,7 @@ function LoginPage() {
             <Sparkles className="h-7 w-7" />
           </div>
           <div className="text-center">
-            <h1 className="text-3xl font-black tracking-tight">Scholarly</h1>
+            <h1 className="text-3xl font-black tracking-tight">EduConnect</h1>
             <p className="mt-1 text-sm text-muted-foreground">School Management Portal</p>
           </div>
         </div>

@@ -6,7 +6,7 @@ import { Bus, Phone, User, MapPin, Clock } from "lucide-react";
 import { Pill } from "@/components/common/Pill";
 
 export const Route = createFileRoute("/transport")({
-  head: () => ({ meta: [{ title: "Transport — Scholarly" }, { name: "description", content: "Live bus tracking and route information." }] }),
+  head: () => ({ meta: [{ title: "Transport — EduConnect" }, { name: "description", content: "Live bus tracking and route information." }] }),
   component: TransportPage,
 });
 

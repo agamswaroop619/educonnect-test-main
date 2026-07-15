@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 export const Route = createFileRoute("/timetable")({
-  head: () => ({ meta: [{ title: "Timetable — Scholarly" }, { name: "description", content: "Weekly class schedule." }] }),
+  head: () => ({ meta: [{ title: "Timetable — EduConnect" }, { name: "description", content: "Weekly class schedule." }] }),
   component: TimetablePage,
 });
 

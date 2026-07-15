@@ -7,7 +7,7 @@ import { useInView } from "@/hooks/use-animate";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/achievements")({
-  head: () => ({ meta: [{ title: "Achievements — Scholarly" }, { name: "description", content: "Milestones, awards and recognitions." }] }),
+  head: () => ({ meta: [{ title: "Achievements — EduConnect" }, { name: "description", content: "Milestones, awards and recognitions." }] }),
   component: AchievementsPage,
 });
 

@@ -13,7 +13,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/leave")({
-  head: () => ({ meta: [{ title: "Leave Application — Scholarly" }, { name: "description", content: "Apply and track student leave." }] }),
+  head: () => ({ meta: [{ title: "Leave Application — EduConnect" }, { name: "description", content: "Apply and track student leave." }] }),
   component: LeavePage,
 });
 

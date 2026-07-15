@@ -5,7 +5,7 @@ import { gallery } from "@/lib/mock-data";
 import { Camera } from "lucide-react";
 
 export const Route = createFileRoute("/gallery")({
-  head: () => ({ meta: [{ title: "Gallery — Scholarly" }, { name: "description", content: "Photos of school events and activities." }] }),
+  head: () => ({ meta: [{ title: "Gallery — EduConnect" }, { name: "description", content: "Photos of school events and activities." }] }),
   component: GalleryPage,
 });
 

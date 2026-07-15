@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { BookOpen, CheckCircle2, Clock, AlertCircle, Download } from "lucide-react";
 
 export const Route = createFileRoute("/homework")({
-  head: () => ({ meta: [{ title: "Homework — Scholarly" }, { name: "description", content: "Homework, resources and submissions." }] }),
+  head: () => ({ meta: [{ title: "Homework — EduConnect" }, { name: "description", content: "Homework, resources and submissions." }] }),
   component: HomeworkPage,
 });
 

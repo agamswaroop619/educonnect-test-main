@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 export const Route = createFileRoute("/ai-assistant")({
-  head: () => ({ meta: [{ title: "AI Assistant — Scholarly" }, { name: "description", content: "Smart homework helper powered by AI." }] }),
+  head: () => ({ meta: [{ title: "AI Assistant — EduConnect" }, { name: "description", content: "Smart homework helper powered by AI." }] }),
   component: AiPage,
 });
 

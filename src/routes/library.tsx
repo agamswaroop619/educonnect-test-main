@@ -7,7 +7,7 @@ import { BookOpen, AlertTriangle, History } from "lucide-react";
 import { Pill } from "@/components/common/Pill";
 
 export const Route = createFileRoute("/library")({
-  head: () => ({ meta: [{ title: "Library — Scholarly" }, { name: "description", content: "Books issued, returned and overdue." }] }),
+  head: () => ({ meta: [{ title: "Library — EduConnect" }, { name: "description", content: "Books issued, returned and overdue." }] }),
   component: LibraryPage,
 });
 
@@ -33,7 +33,7 @@ function LibraryPage() {
   return (
     <AppShell>
       <PageHeader title="Library" subtitle="Track issued books and reading history" />
-      <div className="mb-6 grid grid-cols-3 gap-4">
+      <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
         <StatCard label="Issued" value={library.issued.length} icon={<BookOpen className="h-5 w-5" />} accent="primary" />
         <StatCard label="Overdue" value={library.overdue.length} icon={<AlertTriangle className="h-5 w-5" />} accent="destructive" />
         <StatCard label="Read" value={library.history.length} icon={<History className="h-5 w-5" />} accent="success" />

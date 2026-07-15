@@ -9,7 +9,7 @@ import { Wallet, CheckCircle2, Clock, CreditCard } from "lucide-react";
 import { useInView } from "@/hooks/use-animate";
 
 export const Route = createFileRoute("/fees")({
-  head: () => ({ meta: [{ title: "Fees — Scholarly" }, { name: "description", content: "Fee structure and payment history." }] }),
+  head: () => ({ meta: [{ title: "Fees — EduConnect" }, { name: "description", content: "Fee structure and payment history." }] }),
   component: FeesPage,
 });
 

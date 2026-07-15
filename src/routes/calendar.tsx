@@ -6,7 +6,7 @@ import { Pill } from "@/components/common/Pill";
 import { CalendarDays } from "lucide-react";
 
 export const Route = createFileRoute("/calendar")({
-  head: () => ({ meta: [{ title: "Calendar — Scholarly" }, { name: "description", content: "Upcoming holidays, exams and events." }] }),
+  head: () => ({ meta: [{ title: "Calendar — EduConnect" }, { name: "description", content: "Upcoming holidays, exams and events." }] }),
   component: CalendarPage,
 });
 

@@ -6,7 +6,7 @@ import { Pill } from "@/components/common/Pill";
 import { Pin, Newspaper } from "lucide-react";
 
 export const Route = createFileRoute("/circulars")({
-  head: () => ({ meta: [{ title: "Circulars & News — Scholarly" }, { name: "description", content: "Official announcements and school updates." }] }),
+  head: () => ({ meta: [{ title: "Circulars & News — EduConnect" }, { name: "description", content: "Official announcements and school updates." }] }),
   component: CircularsPage,
 });
 

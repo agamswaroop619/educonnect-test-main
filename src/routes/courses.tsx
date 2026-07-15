@@ -6,7 +6,7 @@ import { subjects } from "@/lib/mock-data";
 import { useInView } from "@/hooks/use-animate";
 
 export const Route = createFileRoute("/courses")({
-  head: () => ({ meta: [{ title: "Courses — Scholarly" }, { name: "description", content: "All subjects, chapters and progress." }] }),
+  head: () => ({ meta: [{ title: "Courses — EduConnect" }, { name: "description", content: "All subjects, chapters and progress." }] }),
   component: CoursesPage,
 });
 

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Bell, Shield, Palette, Globe } from "lucide-react";
 
 export const Route = createFileRoute("/settings")({
-  head: () => ({ meta: [{ title: "Settings — Scholarly" }, { name: "description", content: "Preferences and account settings." }] }),
+  head: () => ({ meta: [{ title: "Settings — EduConnect" }, { name: "description", content: "Preferences and account settings." }] }),
   component: SettingsPage,
 });
 

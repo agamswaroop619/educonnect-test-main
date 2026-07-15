@@ -9,7 +9,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/messages")({
-  head: () => ({ meta: [{ title: "Messages — Scholarly" }, { name: "description", content: "Real-time messaging with teachers and admin." }] }),
+  head: () => ({ meta: [{ title: "Messages — EduConnect" }, { name: "description", content: "Real-time messaging with teachers and admin." }] }),
   component: MessagesPage,
 });
 
@@ -37,7 +37,7 @@ function MessagesPage() {
               <Input placeholder="Search conversations" className="pl-9" />
             </div>
           </div>
-          <ul className="max-h-[520px] divide-y divide-border/30 overflow-y-auto">
+          <ul className="max-h-64 divide-y divide-border/30 overflow-y-auto lg:max-h-[520px]">
             {messages.map(m => (
               <li key={m.id}>
                 <button

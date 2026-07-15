@@ -56,7 +56,7 @@ export function SectionCard({
       )}
     >
       {(title || action) && (
-        <header className="flex items-center justify-between gap-3 border-b border-border/40 px-5 py-4">
+        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border/40 px-5 py-4">
           <h2 className="text-base font-bold tracking-tight">{title}</h2>
           {action}
         </header>
@@ -92,7 +92,7 @@ function AnimatedValue({ value }: { value: ReactNode }) {
 
   if (!parsed) {
     return (
-      <div ref={ref} className="mt-1 text-2xl font-black tracking-tight">
+      <div ref={ref} className="mt-1 truncate text-2xl font-black tracking-tight">
         {value}
       </div>
     );
