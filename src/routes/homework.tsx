@@ -41,10 +41,10 @@ function HomeworkPage() {
     <AppShell>
       <PageHeader title="Homework" subtitle="Assignments, resources and submissions" actions={<Button>New Submission</Button>} />
       <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
-        <StatCard label="Assigned" value={homework.length} icon={<BookOpen className="h-5 w-5" />} />
-        <StatCard label="Pending" value={pending} icon={<Clock className="h-5 w-5" />} accent="warning" />
-        <StatCard label="Submitted" value={submitted} icon={<CheckCircle2 className="h-5 w-5" />} accent="success" />
-        <StatCard label="Overdue" value={overdue} icon={<AlertCircle className="h-5 w-5" />} accent="destructive" />
+        <StatCard label="Assigned" value={homework.length} icon={<BookOpen className="h-5 w-5" />} delay={0} />
+        <StatCard label="Pending" value={pending} icon={<Clock className="h-5 w-5" />} accent="warning" delay={80} />
+        <StatCard label="Submitted" value={submitted} icon={<CheckCircle2 className="h-5 w-5" />} accent="success" delay={160} />
+        <StatCard label="Overdue" value={overdue} icon={<AlertCircle className="h-5 w-5" />} accent="destructive" delay={240} />
       </div>
       <SectionCard title="All Homework" padded={false}>
         <div className="p-4">

@@ -32,9 +32,9 @@ function AttendancePage() {
         </SectionCard>
 
         <div className="grid grid-cols-2 gap-4 lg:col-span-2 lg:grid-cols-3">
-          <StatCard label="Present" value={present} hint={`of ${total}`} icon={<CheckCircle2 className="h-5 w-5" />} accent="success" />
-          <StatCard label="Absent" value={absent} hint="This year" icon={<XCircle className="h-5 w-5" />} accent="destructive" />
-          <StatCard label="Leave" value={leave} hint="Approved" icon={<CalendarOff className="h-5 w-5" />} accent="warning" />
+          <StatCard label="Present" value={present} hint={`of ${total}`} icon={<CheckCircle2 className="h-5 w-5" />} accent="success" delay={0} />
+          <StatCard label="Absent" value={absent} hint="This year" icon={<XCircle className="h-5 w-5" />} accent="destructive" delay={80} />
+          <StatCard label="Leave" value={leave} hint="Approved" icon={<CalendarOff className="h-5 w-5" />} accent="warning" delay={160} />
           <SectionCard title="Monthly Trend" className="col-span-2 lg:col-span-3">
             <div className="h-56">
               <ResponsiveContainer width="100%" height="100%">
@@ -43,7 +43,7 @@ function AttendancePage() {
                   <XAxis dataKey="month" tickLine={false} axisLine={false} />
                   <YAxis tickLine={false} axisLine={false} domain={[70, 100]} />
                   <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid var(--color-border)" }} />
-                  <Bar dataKey="pct" fill="var(--color-primary)" radius={[8, 8, 0, 0]} />
+                  <Bar dataKey="pct" fill="var(--color-primary)" radius={[8, 8, 0, 0]} isAnimationActive animationDuration={1000} animationEasing="ease-out" />
                 </BarChart>
               </ResponsiveContainer>
             </div>

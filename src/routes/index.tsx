@@ -7,6 +7,7 @@ import { StatusDot, Pill } from "@/components/common/Pill";
 import { student, subjects, todaysTasks, attendanceSummary, messages, circulars } from "@/lib/mock-data";
 import { Hand, Calendar, Music, CheckCircle2, TrendingUp, Trophy, MessageSquare } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { useInView } from "@/hooks/use-animate";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -18,41 +19,51 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
+function WelcomeBanner() {
+  const { ref, inView } = useInView<HTMLDivElement>();
+  return (
+    <div
+      ref={ref}
+      className={`mb-8 flex flex-col gap-1 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"}`}
+    >
+      <div className="flex items-center gap-2 text-lg font-medium italic text-foreground/70">
+        Welcome <Hand className="h-5 w-5 text-[oklch(0.75_0.15_60)]" />
+      </div>
+      <h1 className="text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">{student.name}</h1>
+      <p className="text-sm text-muted-foreground">{student.grade} · Roll No {student.rollNo}</p>
+    </div>
+  );
+}
+
 function HomePage() {
   return (
     <AppShell>
       {/* Welcome */}
-      <div className="mb-8 flex flex-col gap-1">
-        <div className="flex items-center gap-2 text-lg font-medium italic text-foreground/70">
-          Welcome <Hand className="h-5 w-5 text-[oklch(0.75_0.15_60)]" />
-        </div>
-        <h1 className="text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">{student.name}</h1>
-        <p className="text-sm text-muted-foreground">{student.grade} · Roll No {student.rollNo}</p>
-      </div>
+      <WelcomeBanner />
 
       {/* Hero grid — reference-style: small icon, subject card, ring, subject card, small icon */}
       <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-[auto_1fr_auto_1fr_auto] lg:items-center">
         <div className="hidden lg:block">
-          <SubjectCard subject={subjects[3]} size="sm" />
+          <SubjectCard subject={subjects[3]} size="sm" index={0} />
         </div>
-        <SubjectCard subject={subjects[0]} size="lg" />
+        <SubjectCard subject={subjects[0]} size="lg" index={1} />
         <div className="col-span-2 flex justify-center py-2 sm:col-span-4 lg:col-span-1">
           <div className="card-surface grid place-items-center p-6">
             <ProgressRing value={100 - (student.daysLeft / 200) * 100} label={String(student.daysLeft)} sub="Days Left" size={200} />
           </div>
         </div>
-        <SubjectCard subject={subjects[1]} size="lg" />
+        <SubjectCard subject={subjects[1]} size="lg" index={2} />
         <div className="hidden lg:block">
-          <SubjectCard subject={subjects[2]} size="sm" />
+          <SubjectCard subject={subjects[2]} size="sm" index={3} />
         </div>
       </div>
 
       {/* Quick stats */}
       <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
-        <StatCard label="Attendance" value={`${student.attendancePct}%`} hint={`${attendanceSummary.streak} day streak`} icon={<CheckCircle2 className="h-5 w-5" />} accent="success" />
-        <StatCard label="CGPA" value={student.cgpa} hint="Term 4" icon={<TrendingUp className="h-5 w-5" />} accent="primary" />
-        <StatCard label="Pending Tasks" value={todaysTasks.filter(t => t.status === "pending").length} hint="Due today" icon={<Calendar className="h-5 w-5" />} accent="warning" />
-        <StatCard label="Awards" value="12" hint="This year" icon={<Trophy className="h-5 w-5" />} accent="primary" />
+        <StatCard label="Attendance" value={`${student.attendancePct}%`} hint={`${attendanceSummary.streak} day streak`} icon={<CheckCircle2 className="h-5 w-5" />} accent="success" delay={0} />
+        <StatCard label="CGPA" value={student.cgpa} hint="Term 4" icon={<TrendingUp className="h-5 w-5" />} accent="primary" delay={80} />
+        <StatCard label="Pending Tasks" value={todaysTasks.filter(t => t.status === "pending").length} hint="Due today" icon={<Calendar className="h-5 w-5" />} accent="warning" delay={160} />
+        <StatCard label="Awards" value="12" hint="This year" icon={<Trophy className="h-5 w-5" />} accent="primary" delay={240} />
       </div>
 
       {/* Bottom row: calendar, tasks, currently playing */}

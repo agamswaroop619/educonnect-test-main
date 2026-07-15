@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { useInView, useCountUp } from "@/hooks/use-animate";
 
 export const Route = createFileRoute("/class")({
   component: ClassPage,
@@ -114,10 +115,10 @@ function ClassPage() {
 
       {/* Stats row */}
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <StatCard icon={<Users className="h-5 w-5" />} label="Total Students" value={CLASS_INFO.strength} accent="primary" />
-        <StatCard icon={<ClipboardCheck className="h-5 w-5" />} label="Avg Attendance" value={`${avgAttendance}%`} accent="success" />
-        <StatCard icon={<BarChart3 className="h-5 w-5" />} label="Class CGPA" value={avgCgpa} accent="primary" />
-        <StatCard icon={<AlertCircle className="h-5 w-5" />} label="Needs Attention" value={needsAttention} accent="warning" />
+        <StatCard icon={<Users className="h-5 w-5" />} label="Total Students" value={CLASS_INFO.strength} accent="primary" delay={0} />
+        <StatCard icon={<ClipboardCheck className="h-5 w-5" />} label="Avg Attendance" value={`${avgAttendance}%`} accent="success" delay={80} />
+        <StatCard icon={<BarChart3 className="h-5 w-5" />} label="Class CGPA" value={avgCgpa} accent="primary" delay={160} />
+        <StatCard icon={<AlertCircle className="h-5 w-5" />} label="Needs Attention" value={needsAttention} accent="warning" delay={240} />
       </div>
 
       {/* Top ranker + subjects overview */}
@@ -138,12 +139,8 @@ function ClassPage() {
         <div className="card-surface p-5 lg:col-span-2">
           <p className="mb-3 text-sm font-semibold">Subject Avg. Scores</p>
           <div className="grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3">
-            {SUBJECTS.map((sub) => (
-              <div key={sub.name} className="flex items-center gap-2">
-                <div className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: sub.color }} />
-                <span className="min-w-0 flex-1 truncate text-sm text-foreground/80">{sub.name}</span>
-                <span className="shrink-0 text-sm font-bold">{sub.avgScore}</span>
-              </div>
+            {SUBJECTS.map((sub, i) => (
+              <SubjectScoreRow key={sub.name} subject={sub} index={i} />
             ))}
           </div>
         </div>
@@ -305,44 +302,8 @@ function ClassPage() {
 
       {activeTab === "subjects" && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {SUBJECTS.map((sub) => (
-            <div key={sub.name} className="card-surface p-5">
-              <div className="mb-4 flex items-start justify-between gap-2">
-                <div>
-                  <div className="h-3 w-3 rounded-full mb-2" style={{ background: sub.color }} />
-                  <p className="text-lg font-bold leading-tight">{sub.name}</p>
-                  <p className="text-sm text-muted-foreground mt-0.5">{sub.teacher}</p>
-                </div>
-                <span className="text-2xl font-black" style={{ color: sub.color }}>{sub.avgScore}</span>
-              </div>
-
-              <div className="mb-1 flex justify-between text-xs text-muted-foreground">
-                <span>Class average</span>
-                <span>{sub.avgScore} / 100</span>
-              </div>
-              <div className="h-2 w-full rounded-full bg-muted">
-                <div
-                  className="h-full rounded-full transition-all"
-                  style={{ width: `${sub.avgScore}%`, background: sub.color }}
-                />
-              </div>
-
-              <div className="mt-4 flex items-center justify-between text-sm">
-                <div className="flex items-center gap-1.5 text-muted-foreground">
-                  <BookOpen className="h-4 w-4" />
-                  <span>{sub.periods} periods / week</span>
-                </div>
-                <span className={cn(
-                  "flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold",
-                  sub.avgScore >= 85 ? "bg-emerald-100 text-emerald-700" :
-                  sub.avgScore >= 75 ? "bg-blue-100 text-blue-700" :
-                  "bg-yellow-100 text-yellow-700"
-                )}>
-                  <Star className="h-3 w-3" />
-                  {sub.avgScore >= 85 ? "Excellent" : sub.avgScore >= 75 ? "Good" : "Average"}
-                </span>
-              </div>
-            </div>
+          {SUBJECTS.map((sub, i) => (
+            <SubjectTabCard key={sub.name} subject={sub} index={i} />
           ))}
         </div>
       )}
@@ -352,28 +313,118 @@ function ClassPage() {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+function SubjectScoreRow({ subject, index }: { subject: typeof SUBJECTS[number]; index: number }) {
+  const { ref, inView } = useInView<HTMLDivElement>();
+  const counted = useCountUp(subject.avgScore, 900, inView);
+  return (
+    <div
+      ref={ref}
+      style={{ transitionDelay: `${index * 60}ms` }}
+      className={`flex items-center gap-2 transition-all duration-500 ${inView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-3"}`}
+    >
+      <div className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: subject.color }} />
+      <span className="min-w-0 flex-1 truncate text-sm text-foreground/80">{subject.name}</span>
+      <span className="shrink-0 text-sm font-bold tabular-nums">{counted}</span>
+    </div>
+  );
+}
+
+function SubjectTabCard({ subject, index }: { subject: typeof SUBJECTS[number]; index: number }) {
+  const { ref, inView } = useInView<HTMLDivElement>();
+  return (
+    <div
+      ref={ref}
+      style={{ transitionDelay: `${index * 80}ms` }}
+      className={cn(
+        "card-surface p-5 transition-all duration-600",
+        inView ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-95"
+      )}
+    >
+      <div className="mb-4 flex items-start justify-between gap-2">
+        <div>
+          <div className="h-3 w-3 rounded-full mb-2" style={{ background: subject.color }} />
+          <p className="text-lg font-bold leading-tight">{subject.name}</p>
+          <p className="text-sm text-muted-foreground mt-0.5">{subject.teacher}</p>
+        </div>
+        <span className="text-2xl font-black" style={{ color: subject.color }}>{subject.avgScore}</span>
+      </div>
+
+      <div className="mb-1 flex justify-between text-xs text-muted-foreground">
+        <span>Class average</span>
+        <span>{subject.avgScore} / 100</span>
+      </div>
+      <div className="h-2 w-full rounded-full bg-muted">
+        <div
+          className="h-full rounded-full transition-all duration-1000"
+          style={{
+            width: inView ? `${subject.avgScore}%` : "0%",
+            background: subject.color,
+            transitionDelay: `${index * 80 + 300}ms`,
+          }}
+        />
+      </div>
+
+      <div className="mt-4 flex items-center justify-between text-sm">
+        <div className="flex items-center gap-1.5 text-muted-foreground">
+          <BookOpen className="h-4 w-4" />
+          <span>{subject.periods} periods / week</span>
+        </div>
+        <span className={cn(
+          "flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold",
+          subject.avgScore >= 85 ? "bg-emerald-100 text-emerald-700" :
+          subject.avgScore >= 75 ? "bg-blue-100 text-blue-700" :
+          "bg-yellow-100 text-yellow-700"
+        )}>
+          <Star className="h-3 w-3" />
+          {subject.avgScore >= 85 ? "Excellent" : subject.avgScore >= 75 ? "Good" : "Average"}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function StatCard({
-  icon, label, value, accent,
+  icon, label, value, accent, delay = 0,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string | number;
   accent: "primary" | "success" | "warning" | "danger";
+  delay?: number;
 }) {
+  const { ref, inView } = useInView<HTMLDivElement>();
   const colors = {
     primary: "bg-primary/10 text-primary",
     success: "bg-emerald-100 text-emerald-600",
     warning: "bg-orange-100 text-orange-600",
     danger: "bg-red-100 text-red-600",
   };
+
+  // Parse numeric value for count-up
+  const numericValue = typeof value === "number" ? value : parseFloat(String(value).replace(/[^0-9.]/g, ""));
+  const isNumeric = !isNaN(numericValue);
+  const suffix = typeof value === "string" ? value.replace(/[0-9.,]/g, "") : "";
+  const counted = useCountUp(isNumeric ? numericValue : 0, 1000, inView && isNumeric);
+  const isDecimal = String(value).includes(".");
+  const displayValue = isNumeric
+    ? `${isDecimal ? counted.toFixed(1) : counted}${suffix}`
+    : value;
+
   return (
-    <div className="card-surface flex items-center gap-4 p-5">
+    <div
+      ref={ref}
+      style={{ transitionDelay: `${delay}ms` }}
+      className={cn(
+        "card-surface flex items-center gap-4 p-5 transition-all duration-700",
+        inView ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-95"
+      )}
+    >
       <div className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-2xl", colors[accent])}>
         {icon}
       </div>
       <div>
         <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</p>
-        <p className="text-2xl font-black tracking-tight leading-none mt-0.5">{value}</p>
+        <p className="text-2xl font-black tracking-tight leading-none mt-0.5 tabular-nums">{displayValue}</p>
       </div>
     </div>
   );
