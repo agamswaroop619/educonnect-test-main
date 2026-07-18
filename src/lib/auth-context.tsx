@@ -1,6 +1,7 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
+import { setAccessToken, setRefreshFn, post } from "@/lib/api-client";
 
-export type UserRole = "teacher" | "parent" | "school_admin";
+export type UserRole = "student" | "teacher" | "parent" | "school_admin";
 
 export interface AuthUser {
   id: string;
@@ -11,36 +12,6 @@ export interface AuthUser {
   subtitle: string;
 }
 
-const MOCK_USERS: Record<string, AuthUser & { password: string }> = {
-  "teacher@school.edu": {
-    id: "TCH-001",
-    name: "Ms. Priya Nair",
-    email: "teacher@school.edu",
-    password: "teacher123",
-    role: "teacher",
-    initials: "PN",
-    subtitle: "Class Teacher · Class 10-B",
-  },
-  "parent@school.edu": {
-    id: "PAR-001",
-    name: "Rajesh Swaroop",
-    email: "parent@school.edu",
-    password: "parent123",
-    role: "parent",
-    initials: "RS",
-    subtitle: "Parent · Atam Swaroop (Class 10-B)",
-  },
-  "admin@school.edu": {
-    id: "ADM-001",
-    name: "Dr. Suresh Mehta",
-    email: "admin@school.edu",
-    password: "admin123",
-    role: "school_admin",
-    initials: "SM",
-    subtitle: "Principal · Delhi Public School",
-  },
-};
-
 interface AuthContextValue {
   user: AuthUser | null;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
@@ -50,37 +21,71 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-const STORAGE_KEY = "edu_auth_user";
-
-// Default user (auth disabled)
-const { password: _defaultPw, ...DEFAULT_USER } = MOCK_USERS["parent@school.edu"];
+function makeInitials(name: string): string {
+  return name
+    .split(" ")
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(DEFAULT_USER);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Auth disabled: using default mock user
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  useEffect(() => {}, []);
+  // Token refresh function — called by api-client on 401
+  const refreshToken = useCallback(async (): Promise<string | null> => {
+    try {
+      const data = await post<{ access_token: string }>("/auth/refresh", {});
+      setAccessToken(data.access_token);
+      return data.access_token;
+    } catch {
+      setUser(null);
+      setAccessToken(null);
+      return null;
+    }
+  }, []);
+
+  // Register the refresh function with the API client once
+  useEffect(() => {
+    setRefreshFn(refreshToken);
+  }, [refreshToken]);
 
   const login = async (email: string, password: string) => {
-    // Simulate network delay
-    await new Promise((r) => setTimeout(r, 800));
+    setIsLoading(true);
+    try {
+      const data = await post<{
+        access_token: string;
+        user: { id: string; role: string; name: string; email: string };
+      }>("/auth/login", { email, password });
 
-    const found = MOCK_USERS[email.toLowerCase()];
-    if (!found || found.password !== password) {
-      return { success: false, error: "Invalid email or password." };
+      setAccessToken(data.access_token);
+
+      const authUser: AuthUser = {
+        id: data.user.id,
+        name: data.user.name,
+        email: data.user.email,
+        role: data.user.role as UserRole,
+        initials: makeInitials(data.user.name),
+        subtitle: data.user.role,
+      };
+      setUser(authUser);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err?.data?.detail ?? "Invalid email or password." };
+    } finally {
+      setIsLoading(false);
     }
-
-    const { password: _pw, ...authUser } = found;
-    setUser(authUser);
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(authUser));
-    return { success: true };
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await post("/auth/logout", {});
+    } catch {
+      // best-effort
+    }
     setUser(null);
-    sessionStorage.removeItem(STORAGE_KEY);
+    setAccessToken(null);
   };
 
   return (
@@ -97,13 +102,15 @@ export function useAuth() {
 }
 
 export const ROLE_LABELS: Record<UserRole, string> = {
+  student: "Student",
   teacher: "Teacher",
   parent: "Parent",
   school_admin: "School Admin",
 };
 
 export const ROLE_COLORS: Record<UserRole, string> = {
-  teacher: "oklch(0.65 0.22 145)",   // green
-  parent: "oklch(0.55 0.24 265)",    // indigo (primary)
+  student: "oklch(0.6 0.2 220)",      // blue
+  teacher: "oklch(0.65 0.22 145)",    // green
+  parent: "oklch(0.55 0.24 265)",     // indigo
   school_admin: "oklch(0.6 0.22 25)", // orange-red
 };
