@@ -28,7 +28,12 @@ class Message(Base):
     )
     read_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
-    replies: Mapped[list["Message"]] = relationship("Message", backref="parent", remote_side=None)
+    replies: Mapped[list["Message"]] = relationship(
+        "Message",
+        primaryjoin="Message.parent_id == foreign(Message.id)",
+        uselist=True,
+        viewonly=True,
+    )
 
 
 class Circular(Base, TimestampMixin):
