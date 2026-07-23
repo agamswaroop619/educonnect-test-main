@@ -1,0 +1,10 @@
+Alembic migration environment for the Scholarly backend.
+
+Run migrations:
+  alembic upgrade head
+
+Generate a new migration after model changes:
+  alembic revision --autogenerate -m "describe change"
+
+Downgrade one revision:
+  alembic downgrade -1
